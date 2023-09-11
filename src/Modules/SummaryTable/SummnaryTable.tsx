@@ -5,10 +5,10 @@ import HmacSHA512 from 'crypto-js/hmac-sha512';
 import { enc } from 'crypto-js'
 import ReactPaginate from 'react-paginate';
 
-export const SummaryTable: React.FC <{ singleDataFetch: any }> = ({ singleDataFetch }) => {
+export const SummaryTable: React.FC <{ singleDataFetch: Object[] }> = ({ singleDataFetch }) => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<Object[]>([]);
     const dataPerPage = 10;
 
     // let apiKey = '90b6bdc6fa26406881fded9460c86fab';
@@ -39,10 +39,10 @@ export const SummaryTable: React.FC <{ singleDataFetch: any }> = ({ singleDataFe
             .then(json => setData(json));
     },[]);
 
-    const lastDataPerPage = currentPage * dataPerPage;
-    const firstDataPerPage = lastDataPerPage - dataPerPage;
-    const currentData = data.slice(firstDataPerPage, lastDataPerPage);
-    const pageCount = Math.ceil(data.length / dataPerPage);
+    const lastDataPerPage: number = currentPage * dataPerPage;
+    const firstDataPerPage: number = lastDataPerPage - dataPerPage;
+    const currentData: Object[] = data.slice(firstDataPerPage, lastDataPerPage);
+    const pageCount: number = Math.ceil(data.length / dataPerPage);
 
     const handlePageClick = (selectedPage:any) => {
         setCurrentPage(selectedPage.selected);
@@ -61,7 +61,7 @@ export const SummaryTable: React.FC <{ singleDataFetch: any }> = ({ singleDataFe
                     </tr>
                 </thead>
                 <tbody className="table-group-divider">
-                    {currentData.map((dt: any, index) => {
+                    {currentData.map((dt: any) => {
                         return (
                             <tr>
                                 <td scope='row'>{dt.symbol}</td>

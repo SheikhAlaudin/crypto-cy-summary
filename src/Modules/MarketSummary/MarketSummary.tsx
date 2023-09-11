@@ -4,8 +4,8 @@ import { SummaryTable } from '../SummaryTable/SummnaryTable';
 import { Footer } from '../../Common/Footer/Footer';
 
 export const MarketSummary: React.FC = () => {
-  const [singleDataFetch, setSingleDataFetch] = useState([]);
-  const handleSubmit = (singleDataFetch: any) =>{
+  const [singleDataFetch, setSingleDataFetch] = useState<Object[]>([]);
+  const handleSubmit: Function = (singleDataFetch: Object[]) =>{
     setSingleDataFetch(singleDataFetch);
   }
   return (

@@ -20,7 +20,7 @@ describe('SummaryTable Test Component', () => {
         });
         
         await act( async () => {
-            render(<SummaryTable  singleDataFetch={[]}/>)
+            render(<SummaryTable  singleDataFetch={[]} handleClickedData={jest.fn()}/>)
         });
     });
 

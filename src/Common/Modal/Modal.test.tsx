@@ -4,7 +4,7 @@ import { Modal } from './Modal';
 
 describe('Modal Test Component', () => {
 
-  test('renders Moda;', () => {
+  test('renders Modal', () => {
     render(<Modal handleButtonClicked={jest.fn()} content='Please Provide Proper Currency Name'/>);
     const linkElement = screen.getByText(/Please Provide Proper Currency Name/);
     expect(linkElement).toBeInTheDocument();

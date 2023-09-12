@@ -5,7 +5,7 @@ export const Footer: React.FC = () => {
     <footer className="bg-primary text-center text-lg-start">
       <div className="text-center p-3">
         © 2023 Copyright:&nbsp;
-        <a className="text-dark" href="#">cryptocy.com</a>
+        <a className="text-dark" href="#" data-testid="footer_crypto">cryptocy.com</a>
       </div>
     </footer>
   );

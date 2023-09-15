@@ -1,80 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './SummaryTable.css';
-import sha512 from 'crypto-js/sha512';
-import HmacSHA512 from 'crypto-js/hmac-sha512';
-import { enc } from 'crypto-js'
 import ReactPaginate from 'react-paginate';
 import { Modal } from '../../Common/Modal/Modal';
+import AppContext from '../../Context/app-context';
 
-export const SummaryTable: React.FC<{ singleDataFetch: any, handleClickedData: any }> = ({ singleDataFetch, handleClickedData }) => {
+export const SummaryTable: React.FC = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [data, setData] = useState<Object[]>([]);
-    const [showModel, setShowModel] = useState(false);
     const dataPerPage = 10;
 
-    // let apiKey = '90b6bdc6fa26406881fded9460c86fab';
-    // var timestamp: any = new Date().getTime();
-    // var contentHash = sha512(JSON.stringify('')).toString(enc.Hex);
-    // var apiSecret = '104ed396e0a54e24b8b85cb9465107f4';
-
-    // var uri = 'https://api.bittrex.com/v3/markets/summaries';
-    // var preSign = [timestamp, uri, , contentHash].join('');
-    // var signature = HmacSHA512(preSign, apiSecret).toString(enc.Hex);
+    const { fetchedData, showModal,  setUpdatedFetchedData, setUpdatedModal, setUpdatedClickedData } = useContext(AppContext);
 
     useEffect(() => {
-        setData(singleDataFetch);
         setCurrentPage(1);
-        if (singleDataFetch.length === 0) {
-            handleClickedData({});
-        } else if(singleDataFetch.length > 0 && singleDataFetch.length > 0){
-            handleClickedData({
-                symbol: singleDataFetch[0].symbol,
-                change: singleDataFetch[0].percentChange
-            });
-        }
-    }, [singleDataFetch]);
+    }, [fetchedData]);
 
     useEffect(() => {
-        fetch('/v3/markets/summaries', {
-            headers: {
-                // 'Api-Key': apiKey,
-                // 'Api-Timestamp': timestamp,
-                // 'Api-Content-Hash': contentHash,
-                // 'Api-Signature': signature,
-                // 'Content-Type': 'application/json',
-                // 'Accept': 'application/json'
-            }
-        })
+        fetch('/v3/markets/summaries')
             .then(respone => {
                 if (respone.ok) {
                     return respone.json();
                 } else {
-                    setShowModel(true);
+                    setUpdatedModal(true);
                     return [];
                 }
 
             })
-            .then(json => setData(json));
+            .then(json => setUpdatedFetchedData(json));
 
     }, []);
 
     const lastDataPerPage: number = currentPage * dataPerPage;
     const firstDataPerPage: number = lastDataPerPage - dataPerPage;
-    const currentData: Object[] = data.length > 0 ? data.slice(firstDataPerPage, lastDataPerPage) : [];
-    const pageCount: number = data.length > 0 ? Math.ceil(data.length / dataPerPage) : 0;
+    const currentData: Object[] = fetchedData.length > 0 ? fetchedData.slice(firstDataPerPage, lastDataPerPage) : [];
+    const pageCount: number = fetchedData.length > 0 ? Math.ceil(fetchedData.length / dataPerPage) : 0;
 
     const handlePageClick = (selectedPage: any) => {
         setCurrentPage(selectedPage.selected);
     }
     const hideShowModel = () => {
-        setShowModel(false);
+        setUpdatedModal(false);
     }
 
     const onClickHandler = (event: any) => {
         let symbol = event.target.parentElement.cells[0].innerText;
         let change = event.target.parentElement.cells[4].innerText;
-        handleClickedData({
+        setUpdatedClickedData({
             symbol: symbol,
             change: change
         })
@@ -83,7 +54,7 @@ export const SummaryTable: React.FC<{ singleDataFetch: any, handleClickedData: a
     return (
 
         <div className='summaryTable'>
-            {showModel && <Modal handleButtonClicked={hideShowModel} content='Something Went Wrong, Please try again later' />}
+            {showModal && <Modal handleButtonClicked={hideShowModel} content='Something Went Wrong, Please try again later' />}
             <div className="card-header fs-4">
                 Currency Table
             </div>

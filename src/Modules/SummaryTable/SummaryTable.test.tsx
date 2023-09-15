@@ -1,5 +1,5 @@
 
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { SummaryTable } from './SummnaryTable';
 import { act } from 'react-dom/test-utils';
 
@@ -20,7 +20,7 @@ describe('SummaryTable Test Component', () => {
         });
         
         await act( async () => {
-            render(<SummaryTable  singleDataFetch={[]} handleClickedData={jest.fn()}/>)
+            render(<SummaryTable />)
         });
     });
 

@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './MainModule.css'
-export const MainModule: React.FC<{ clickedData: any }> = ({ clickedData }) => {
+import AppContext from '../../Context/app-context';
+
+export const MainModule: React.FC = () => {
+
+    const { clickedData } = useContext(AppContext);
     let arrow = 'black';
     let color = 'black';
     if (clickedData && clickedData.change) {

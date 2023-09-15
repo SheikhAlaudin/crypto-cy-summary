@@ -1,36 +1,20 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import './Header.css'
 import { Modal } from '../Modal/Modal';
+import AppContext from '../../Context/app-context';
 
-export const Header: React.FC<{ handleSubmit: any }> = ({ handleSubmit }) => {
+export const Header: React.FC = () => {
     const [inputVal, setInputVal] = useState('');
-    const [showModal, setShowModal] = useState(false);
+    const { showModal, onHeaderClickHandler, setUpdatedModal } = useContext(AppContext);
     const onInputChange = (event: ChangeEvent) => {
         setInputVal((event.target as HTMLInputElement).value);
     }
     const onClickHandler = (event: FormEvent) => {
-        if (inputVal) {
-            fetch(`/v3/markets/${inputVal}/summary`)
-                .then(respone => {
-                    if (respone.ok) {
-                        return respone.json();
-                    } else {
-                        setShowModal(true);
-                        return [];
-                    }
-                })
-                .then(json => handleSubmit([json]));
-        } else if (inputVal === '') {
-            fetch(`/v3/markets/summaries`)
-                .then(respone => respone.json())
-                .then(json => handleSubmit(json));
-        }
-        event.stopPropagation();
-        event.preventDefault();
+        onHeaderClickHandler(event, inputVal);
     }
 
     const hideShowModel = () => {
-        setShowModal(false);
+        setUpdatedModal(false);
     }
     return (
         <>
